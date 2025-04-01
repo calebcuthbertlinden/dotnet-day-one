@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/dotnet-day-one.props" />
+</Project>

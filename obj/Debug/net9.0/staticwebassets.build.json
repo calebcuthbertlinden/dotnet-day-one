@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "LHFNEMTyTCyM1JmUSAFTzFJD1GIR06uP7TgbhcO5lfo=",
+  "Source": "dotnet-day-one",
+  "BasePath": "_content/dotnet-day-one",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
