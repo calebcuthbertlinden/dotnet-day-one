@@ -171,3 +171,83 @@ az webapp deployment source config-zip --resource-group MyResourceGroup --name M
 ```
 az webapp show --resource-group MyResourceGroup --name MyAuthApi --query "defaultHostName" -o tsv
 ```
+
+## IaC - Bicep
+
+### Install Bicep CLI (If Needed)
+```
+az bicep install
+az bicep version
+```
+
+### Create the Bicep File
+```
+// Parameters
+param appServiceName string = 'DotnetTestAppBicep'
+param resourceGroup string = 'TestGroup'
+param location string = 'eastus'
+
+// App Service Plan
+resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
+  name: '${appServiceName}-plan'
+  location: location
+  sku: {
+    tier: 'Basic'
+    name: 'B1'
+  }
+  kind: 'linux'
+  properties: {
+    reserved: true  // 🔹 This forces it to be a Linux plan!
+  }
+}
+
+// App Service
+resource appService 'Microsoft.Web/sites@2022-03-01' = {
+  name: appServiceName
+  location: location
+  kind: 'app'
+  properties: {
+    serverFarmId: appServicePlan.id
+    siteConfig: {
+      linuxFxVersion: 'DOTNETCORE|9.0'
+    }
+  }
+}
+```
+
+Check for available locations
+```
+az account list-locations -o table
+```
+
+Check available Linux versions
+```
+az webapp list-runtimes --os-type Linux
+```
+
+This is important to force it to be Linux
+```
+properties: {
+    reserved: true  // 🔹 This forces it to be a Linux plan!
+  }
+```
+
+### Deploy the Bicep Template
+```
+az deployment group create --resource-group TestGroup --template-file main.bicep
+```
+
+### Deploy Your App Code
+```
+az webapp deploy --resource-group TestGroup --name DotnetTestAppBicep --src-path dotnet-api.zip --type zip
+```
+
+## Minimal API's
+[https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-8.0](Documentation)
+
+
+
+## ORM
+
+### Dapper 
+### Entity Framework
